@@ -1,0 +1,84 @@
+Steps to setup cuda and opencl along with John the ripper
+
+1) utility to install drivers automatically 
+
+`sudo apt install ubuntu-drivers-common`
+
+2) Information about GPU
+
+`ubuntu-drivers devices`
+
+== /sys/devices/pci0000:00/0000:00:01.0/0000:01:00.0 ==
+modalias : pci:v000010DEd00001180sv00001458sd0000353Cbc03sc00i00
+vendor   : NVIDIA Corporation
+model    : GP106 [GeForce GTX 1060 6GB]
+driver   : nvidia-304 - distro non-free
+driver   : nvidia-340 - distro non-free
+driver   : nvidia-390 - distro non-free recommended
+driver   : xserver-xorg-video-nouveau - distro free builtin
+
+== cpu-microcode.py ==
+driver   : intel-microcode - distro free
+
+
+3) 	Install the relevant driver for GPU
+
+`sudo ubuntu-drivers autoinstall`
+
+
+4) Install CUDA
+
+
+Check your version:
+
+`lsb_release -a`
+
+
+Download CUDA for Ubuntu 16.04
+`wget http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_8.0.44-1_amd64.deb`
+
+Install CUDA:
+
+`sudo dpkg -i cuda-repo-ubuntu1604_8.0.44-1_amd64.deb`
+`sudo apt-get update`
+`sudo apt-get install cuda`
+
+
+
+5) Setup JohnTheRipper
+
+`git clone  https://github.com/magnumripper/JohnTheRipper.git`
+
+`sudo apt-get install yasm libgmp-dev libpcap-dev pkg-config libbz2-dev`
+
+`sudo apt-get install nvidia-opencl-dev`
+
+
+Go to the src folder of JohnTheRipper
+`./configure && make -s clean && make -sj4`
+
+
+5) Install OpenCL (John the ripper utilizes the GPU with OpenCL)
+
+` sudo apt-get install build-essential libssl-dev git`
+
+`sudo apt-get install yasm libgmp-dev libpcap-dev pkg-config libbz2-dev zlib1g-dev`
+
+`sudo apt-get install nvidia-opencl-dev`
+
+`sudo apt-get install ocl-icd-opencl-dev opencl-headers fglrx-dev`
+
+`sudo apt-get install libopenmpi-dev openmpi-bin`
+
+`sudo apt-get install cmake bison flex libicu-dev`
+
+Go to the src directory og JohnTheRipper;
+
+`./configure && make -s clean && make -sj4`
+
+Check if OpenCL is installed:
+
+`../run/john --list=opencl-devices`
+
+
+
